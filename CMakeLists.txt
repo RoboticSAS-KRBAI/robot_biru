@@ -62,6 +62,8 @@ add_message_files(
   ObjectDetection.msg
   gerak.msg
   ObjectDifference.msg
+  Manual.msg
+  PID.msg
 )
 
 ## Generate services in the 'srv' folder
