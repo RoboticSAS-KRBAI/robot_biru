@@ -1,8 +1,8 @@
 <launch>
-    <arg name='port_arduino' default='/dev/rosserial_arduino' />
+    <arg name='port_arduino' default='/dev/ttyUSB0' />
     <arg name='baud_arduino' default='57600' />
 
-    <arg name='port_teensy' default='/dev/rosserial_teensy' />
+    <arg name='port_teensy' default='/dev/ttyACM0' />
     <arg name='baud_teensy' default='57600' />
 
     <group ns='rosserial'>

@@ -1,6 +1,6 @@
 <launch>
     <arg name='rate' default='10' />
-    <arg name='delay' default='3' />
+    <arg name='delay' default='1' />
     <arg name='arming_duration' default='1' />
     <arg name='duration' default='-1' />
 

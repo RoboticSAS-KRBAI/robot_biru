@@ -1,10 +1,15 @@
 float32 roll
 float32 pitch
 float32 yaw
-float32 pressure
-float32 temperature
 float32 depth
-float32 altitude
-float32 pos_x
-float32 pos_y
-float32 pos_z
+float32 busvoltage
+float32 shuntvoltage
+float32 loadvoltage
+float32 current_mA
+float32 power_mW
+float32 temperature
+float32 humidity
+float32 pressure_abs
+float32 pressure_relative
+float32 altitude_delta
+

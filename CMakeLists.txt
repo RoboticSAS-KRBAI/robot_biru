@@ -60,6 +60,7 @@ add_message_files(
   Orientation.msg
   BoundingBox.msg
   ObjectDetection.msg
+  gerak.msg
 )
 
 ## Generate services in the 'srv' folder
