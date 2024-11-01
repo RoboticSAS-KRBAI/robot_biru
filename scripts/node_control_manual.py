@@ -2,8 +2,8 @@
 
 import rospy
 import time
-from std_msgs.msg import Bool, Int32, String , Float32
-from robotic_sas_auv_ros.msg import Error, Actuator, IsStable, ObjectDifference
+from std_msgs.msg import Bool, Int32, String
+from robotic_sas_auv_ros.msg import Error, Actuator, IsStable, ObjectDifference,Manual
 import numpy as np
 
 class DPRController: # Depth Pitch Roll
@@ -140,8 +140,8 @@ class Subscriber():
         self.move = "stop"
         self.boot_time = 0
         self.start_time = 0
-        self.tau = 0
         self.object_difference = ObjectDifference()
+        self.manual = Manual()
         self.error = Error()
         self.is_stable = IsStable()
         self.ssyController = SSYController(1)
@@ -153,12 +153,15 @@ class Subscriber():
         self.param_arming_duration = rospy.get_param('/nuc/arming_duration')
 
         self.pid_depth = PID(1800, 0, 200)
+        # self.pid_depth = PID(1700, 0, 200)
+
         self.pid_roll = PID(15, 0, 0)
-        # self.pid_pitch = PID(1200, 0, 200) 
-        self.pid_pitch = PID(15, 0, 7) # P 2000 I 0 D 500 jika ingin pakai thrust 9 & 10
+
+        # self.pid_pitch = PID(15, 0, 7)
+        self.pid_pitch = PID(40, 0, 7)
+        
         self.pid_sway = PID(6, 0, 0)
         
-        # self.pid_yaw = PID(17, 0, 10)
         self.pid_yaw = PID(10, 0, 1)
 
         self.pid_camera = PID(1, 0, 0)
@@ -186,13 +189,14 @@ class Subscriber():
         rospy.Subscriber('is_start', Bool, self.callback_is_start)
         rospy.Subscriber('move', String, self.callback_move)
         rospy.Subscriber('object_difference', ObjectDifference, self.callback_object_difference)
-        rospy.Subscriber('tau',Float32,self.callback_tau)
+        rospy.Subscriber('/manual_control', Manual, self.callback_manual)
 
         self.pub_dive = rospy.Publisher('dive',Bool,queue_size=10)
 
-
-    def callback_tau(self, data:Float32):
-        self.tau = data.data
+    def callback_manual(self, data: Manual):
+        self.manual.fx = data.fx
+        self.manual.fy = data.fy
+        self.manual.tau = data.tau
 
     def constrain(self, value, _min, _max):
         return min(max(value, _min), _max)
@@ -231,8 +235,8 @@ class Subscriber():
         pwm_thruster_2 = self.constrain(1500 - (self.thrust_surge_sway_yaw[0] * 500 - self.get_offset(self.offset_surge_sway_yaw[0])), min_pwm, max_pwm)
         pwm_thruster_3 = self.constrain(1500 - (self.thrust_surge_sway_yaw[3] * 500 - self.get_offset(self.offset_surge_sway_yaw[3])), min_pwm, max_pwm)
         pwm_thruster_4 = self.constrain(1500 - (self.thrust_surge_sway_yaw[2] * 500 - self.get_offset(self.offset_surge_sway_yaw[2])), min_pwm, max_pwm)
-        pwm_thruster_9 = self.constrain(1500 - (self.thrust_surge_sway_yaw[1] * 500 - self.get_offset(self.offset_surge_sway_yaw[1])), self.constrain_pwm_min, self.constrain_pwm_max)
-        pwm_thruster_10 = self.constrain(1500 - (self.thrust_surge_sway_yaw[0] * 500 - self.get_offset(self.offset_surge_sway_yaw[0])), self.constrain_pwm_min, self.constrain_pwm_max)
+        pwm_thruster_9 = self.constrain(1500 - (self.thrust_surge_sway_yaw[1] * 500 - self.get_offset(self.offset_surge_sway_yaw[1])), 1450, 1550)
+        pwm_thruster_10 = self.constrain(1500 - (self.thrust_surge_sway_yaw[0] * 500 - self.get_offset(self.offset_surge_sway_yaw[0])), 1450, 1550)
         
         self.movement.surge_sway_yaw(pwm_thruster_1, pwm_thruster_2, pwm_thruster_3, pwm_thruster_4, pwm_thruster_9, pwm_thruster_10)
 
@@ -271,13 +275,20 @@ class Subscriber():
    
     def stabilize_surge_yaw(self, error):
         self.t_yaw = np.interp(self.pid_yaw(error), [-500, 500], [-3, 3])
-        # - kiri, + kanan
-        self.thrust_surge_sway_yaw = self.ssyController.control(0, 2, self.tau)
-        # print("tau = ", self.tau)
+        self.thrust_surge_sway_yaw = self.ssyController.control(0, 2.5, self.t_yaw)
+        # self.thrust_surge_sway_yaw = self.ssyController.control(0, 2, 0) # Tanpa Yaw (Darurat)
+
+    def stabilize_surge_yaw_last(self, error):
+        self.t_yaw = np.interp(self.pid_yaw(error), [-500, 500], [-3, 3])
+        self.thrust_surge_sway_yaw = self.ssyController.control(0, 2.5, 0) # Tanpa Yaw (Darurat)
     
     def stabilize_sway_yaw_left(self, error):
         self.t_yaw = np.interp(self.pid_yaw(error), [-500, 500], [-3, 3])
-        self.thrust_surge_sway_yaw = self.ssyController.control(2, 0, 0.3)
+        self.thrust_surge_sway_yaw = self.ssyController.control(4, 1, self.t_yaw)
+
+    def stabilize_sway_yaw_right(self, error):
+        self.t_yaw = np.interp(self.pid_yaw(error), [-500, 500], [-3, 3])
+        self.thrust_surge_sway_yaw = self.ssyController.control(-4, 1, self.t_yaw)
 
     def stabilize_yaw_right(self, error):
         self.t_yaw = np.interp(self.pid_yaw(error), [-500, 500], [-3, 3])
@@ -285,11 +296,11 @@ class Subscriber():
 
     def stabilize_yaw_left(self, error):
         self.t_yaw = np.interp(self.pid_yaw(error), [-500, 500], [-3, 3])
-        self.thrust_surge_sway_yaw = self.ssyController.control(0, 0, -0.7)
+        self.thrust_surge_sway_yaw = self.ssyController.control(0, 0, -0.75)
 
-    def stabilize_sway_yaw_right(self, error):
+    def stabilize_manual(self, error):
         self.t_yaw = np.interp(self.pid_yaw(error), [-500, 500], [-3, 3])
-        self.thrust_surge_sway_yaw = self.ssyController.control(-2, 0, -0.135)
+        self.thrust_surge_sway_yaw = self.ssyController.control(self.manual.fx, self.manual.fy, self.manual.tau)
 
     def callback_move(self, data: String):
         self.move = data.data
@@ -303,7 +314,7 @@ class Subscriber():
     # Collect Constrain PWM
     def callback_constrain_pwm(self, data: Int32):
         self.constrain_pwm_min = data.data
-        self.constrain_pwm_max = (1500 - data.data) + 1500
+        self.constrain_pwm_max = (1500 - data.data)+1500
         
     def callback_error(self, data: Error):
         self.stabilize_depth_pitch_roll(data.depth, data.pitch, data.roll)
@@ -313,12 +324,15 @@ class Subscriber():
             self.stabilize_sway_yaw_right(data.yaw)
         elif self.move == "forward":
             self.stabilize_surge_yaw(data.yaw)
+        elif self.move == "last":
+            self.stabilize_surge_yaw_last(data.yaw)
         elif self.move == "yaw_right":
             self.stabilize_yaw_right(data.yaw)
         elif self.move == "yaw_left":
             self.stabilize_yaw_left(data.yaw)
+        elif self.move == "manual":
+            self.stabilize_manual(data.yaw)
         
-
     def stabilize(self):
 
         if not self.is_start:
@@ -327,9 +341,9 @@ class Subscriber():
 
         self.boot_time = rospy.get_time() - self.start_time
 
-        if self.is_in_range(1,3):
+        if self.is_in_range(1,5):
             rospy.loginfo("Set Depth")
-        if self.move == "forward" or self.move == "camera":
+        if self.move == "forward" or self.move == "camera" or self.move == "last" or self.move == "manual":
             #print("Surge Yaw")
             self.surge_yaw()
         elif self.move == "left" or self.move == "right" or self.move == "yaw_right" or self.move == "yaw_left":
