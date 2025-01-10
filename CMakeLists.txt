@@ -49,21 +49,23 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  Sensor.msg
-  Movement.msg
-  ArduinoSensor.msg
-  Heading.msg
   Actuator.msg
-  SetPoint.msg
-  Error.msg
-  IsStable.msg
-  Orientation.msg
+  ArduinoSensor.msg
   BoundingBox.msg
-  ObjectDetection.msg
+  Error.msg
   gerak.msg
-  ObjectDifference.msg
+  Heading.msg
+  IsStable.msg
+  Joystick.msg
   Manual.msg
+  Movement.msg
+  MultiPID.msg
+  ObjectDetection.msg
+  ObjectDifference.msg
+  Orientation.msg
   PID.msg
+  Sensor.msg
+  SetPoint.msg
 )
 
 ## Generate services in the 'srv' folder

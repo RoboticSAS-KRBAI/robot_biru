@@ -1,5 +1,4 @@
 import numpy as np
-
 class ROVController:
     def __init__(self, d):
         self.d = d
@@ -20,8 +19,6 @@ class ROVController:
         T = np.dot(np.linalg.pinv(self.M), F)
 
         return T
-
-
 if __name__ == '__main__' :
 
     # Parameter ROV
@@ -31,8 +28,8 @@ if __name__ == '__main__' :
     controller = ROVController(d)
 
     # Gaya yang diinginkan (Fx, Fy, tau)
-    Fx = 0  # Gaya maju
-    Fy = 2.5  # Gaya ke samping
+    Fx = 1  # Gaya samping
+    Fy = 0  # Gaya maju
     tau = 0  # Momen yaw
 
     # Hitung thrust yang diperlukan untuk setiap thruster

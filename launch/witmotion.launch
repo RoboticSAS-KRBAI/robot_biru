@@ -1,5 +1,5 @@
 <launch>
-    <arg name='port_heading' default='/dev/ttyUSB1' />
+    <arg name='port_heading' default='/dev/ttyUSB2' />
     <arg name='baud_heading' default='115200' />
     <arg name='rate_heading' default='20' />
 

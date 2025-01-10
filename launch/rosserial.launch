@@ -3,7 +3,7 @@
     <arg name='baud_arduino' default='57600' />
 
     <arg name='port_teensy' default='/dev/ttyACM0' />
-    <arg name='baud_teensy' default='57600' />
+    <arg name='baud_teensy' default='115200' />
 
     <group ns='rosserial'>
         <node pkg='robotic_sas_auv_ros' type='node_arduino.py' name='node_arduino' output='screen'>

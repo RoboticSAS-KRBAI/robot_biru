@@ -42,6 +42,8 @@ class Subscriber():
         # Calculate Error Value
         error_roll = self.calculate_heading_error(data.roll, self.set_point.roll)
         error_pitch = self.calculate_heading_error(data.pitch, self.set_point.pitch)
+        # if error_pitch < 0:
+        #     error_pitch = 2*error_pitch
         error_yaw = self.calculate_heading_error(data.yaw, self.set_point.yaw)
         error_sway = self.calculate_heading_error(data.sway, self.set_point.sway)
         error_depth = self.set_point.depth - data.depth

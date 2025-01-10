@@ -30,7 +30,7 @@ class Subscriber():
         self.set_point.roll = 0 #y
         self.set_point.pitch = 0 #x
         self.set_point.yaw = self.yaw
-        self.set_point.depth = -0.45
+        self.set_point.depth = -0.70
         self.towards_bucket = False
 
         self.param_delay = rospy.get_param('/nuc/delay')
@@ -84,23 +84,31 @@ class Subscriber():
 
     def start_auv(self):
         # Stop AUV when the timer reaches 27 secs since pre calibration
-        if self.is_in_range(23, None):
-            self.stop_auv()
-            return
+        # if self.is_in_range(23, None):
+        #     self.stop_auv()
+        #     return
         
         # Start AUV mission
         self.pub_set_point.publish(self.set_point)
         self.pub_is_start.publish(True)
 
         if not self.dive.data:
-            if self.is_in_range(6, 9): 
-                rospy.loginfo("Forward")
-                self.pub_move.publish("forward")
-                self.set_heading(self.yaw)
-            if self.is_in_range(10, 22): 
-                rospy.loginfo("Forward_yaw")
-                self.pub_move.publish("forward_yaw")
-                self.set_heading(self.yaw)
+            pass
+            # if self.is_in_range(3, None): 
+            #     rospy.loginfo("Surge")
+            #     self.pub_move.publish("forward")
+            #     self.set_heading(-100)
+            # if self.is_in_range(6, None): 
+            #     rospy.loginfo("Forward_Yaw")
+            #     self.pub_move.publish("forward_yaw")
+            #     self.set_heading(-100)
+            # if self.is_in_range(3, 9): 
+            #     rospy.loginfo("Camera")
+            #     self.pub_move.publish("camera")
+            # if self.is_in_range(10, None): 
+            #     rospy.loginfo("Forward_Yaw")
+            #     self.pub_move.publish("forward_yaw")
+            #     self.set_heading(-90)
             # if self.is_in_range(23, 28): 
             #     rospy.loginfo("Sway_Right")
             #     self.pub_move.publish("sway_right")
@@ -121,14 +129,14 @@ class Subscriber():
             #     rospy.loginfo("SURFACE")
             #     self.pub_move.publish("surface")
             #     self.set_point.depth = -0.8
-            if self.is_in_range(6,7):
-                self.pub_constrain_pwm.publish(1500)
-            if self.is_in_range(7,8): 
-                self.pub_constrain_pwm.publish(1400)
-            if self.is_in_range(8,9):
-                self.pub_constrain_pwm.publish(1200)
-            if self.is_in_range(9,None):
-                self.pub_constrain_pwm.publish(1100)
+            # if self.is_in_range(3,None): 
+            #     self.pub_constrain_pwm.publish(1500)
+            # if self.is_in_range(3,None):
+            #     self.pub_constrain_pwm.publish(1450)
+            # # if self.is_in_range(11,12):
+            #     self.pub_constrain_pwm.publish(1494)
+            # if self.is_in_range(13,None):
+            #     self.pub_constrain_pwm.publish(1450)
             # if self.is_in_range(10, None):
             #     self.pub_constrain_pwm.publish(1100)
             # if self.is_in_range(11,12):

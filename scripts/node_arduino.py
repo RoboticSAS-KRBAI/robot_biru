@@ -47,7 +47,7 @@ if __name__=="__main__":
     rospy.init_node("node_arduino")
     rospy.loginfo("ROS Serial Python Node")
 
-    port_name = rospy.get_param('~port_arduino','/dev/ttyUSB0')
+    port_name = rospy.get_param('~port_arduino','/dev/ttyACM0')
     baud = int(rospy.get_param('~baud_arduino','57600'))
 
     # for systems where pyserial yields errors in the fcntl.ioctl(self.fd, TIOCMBIS, \
