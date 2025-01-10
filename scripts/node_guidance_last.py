@@ -103,6 +103,7 @@ class Subscriber():
             #     rospy.loginfo("yaw_right")
             #     self.pub_move.publish("yaw_right")
 
+<<<<<<< HEAD
             if self.is_in_range(3, 40): # 20 detik
                 rospy.loginfo("forward")
                 self.pub_move.publish("forward")
@@ -130,6 +131,35 @@ class Subscriber():
             #     elif self.towards_bucket == False:
             #         rospy.loginfo("Search for Bucket")
             #         self.pub_move.publish("right")
+=======
+            if self.is_in_range(3, 22): # 20 detik
+                rospy.loginfo("forward")
+                self.pub_move.publish("forward")
+                self.pub_tau.publish(-0.0483)
+            if self.is_in_range(23, 27): # 4 detik
+                rospy.loginfo("yaw_left")
+                self.pub_move.publish("yaw_left")
+            if self.is_in_range(28, 31): # 3 detik
+                rospy.loginfo("forward")
+                self.pub_move.publish("forward")
+                self.pub_tau.publish(-0.0483)
+            if self.is_in_range(32, 35): # 3 detik
+                rospy.loginfo("yaw_right")
+                self.pub_move.publish("yaw_right")
+            if self.is_in_range(36, 80) and self.flag != 3: # 20 detik
+                rospy.loginfo("Forward")
+                self.pub_move.publish("forward")
+                # self.pub_tau.publish(-0.06)
+                self.pub_tau.publish(-0.05)
+            if self.flag == 3 and self.bucket_detected == False:
+                if self.object_difference.object_type == "Bucket":
+                    rospy.loginfo("Centering Bucket")
+                    self.pub_move.publish("camera")
+                    self.towards_bucket = True
+                elif self.towards_bucket == False:
+                    rospy.loginfo("Search for Bucket")
+                    self.pub_move.publish("right")
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
             # if self.is_in_range(52, 55): # 3 detik
             #     rospy.loginfo("Right")
@@ -143,6 +173,7 @@ class Subscriber():
             #     rospy.loginfo("Search for Bucket")
             #     self.pub_move.publish("camera")
 
+<<<<<<< HEAD
             # if self.bucket_detected == True:
             #     rospy.loginfo("Surface")
             #     self.pub_move.publish("surface")
@@ -154,6 +185,19 @@ class Subscriber():
             #         pass
             #     else:
             #         self.set_point.depth = 0.2
+=======
+            if self.bucket_detected == True:
+                rospy.loginfo("Surface")
+                self.pub_move.publish("surface")
+                if self.start_delay == False:
+                    self.start = rospy.get_time()
+                    rospy.Timer(rospy.Duration(1), self.delay_time, oneshot=False)
+                    self.start_delay = True
+                elif self.elapsed_time <= self.delay:
+                    pass
+                else:
+                    self.set_point.depth = 0.2
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
             if self.is_in_range(6,7):
                 self.pub_constrain_pwm.publish(1500)
@@ -161,6 +205,7 @@ class Subscriber():
                 self.pub_constrain_pwm.publish(1490)
             if self.is_in_range(8,9):
                 self.pub_constrain_pwm.publish(1480)
+<<<<<<< HEAD
             if self.is_in_range(9,None):
                 self.pub_constrain_pwm.publish(1470)
             # if self.is_in_range(10, 11):
@@ -177,6 +222,24 @@ class Subscriber():
             #     self.pub_constrain_pwm.publish(1410)
             # if self.is_in_range(16,None):
             #     self.pub_constrain_pwm.publish(1400)
+=======
+            if self.is_in_range(9,10):
+                self.pub_constrain_pwm.publish(1470)
+            if self.is_in_range(10, 11):
+                self.pub_constrain_pwm.publish(1460)
+            if self.is_in_range(11,12):
+                self.pub_constrain_pwm.publish(1450)
+            if self.is_in_range(12,13):
+                self.pub_constrain_pwm.publish(1440)
+            if self.is_in_range(13,14):
+                self.pub_constrain_pwm.publish(1430)
+            if self.is_in_range(14,15):
+                self.pub_constrain_pwm.publish(1420)
+            if self.is_in_range(15,16):
+                self.pub_constrain_pwm.publish(1410)
+            if self.is_in_range(16,None):
+                self.pub_constrain_pwm.publish(1400)
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
     def callback_is_start(self, data: Bool):
         if data.data:

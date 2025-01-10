@@ -20,6 +20,10 @@ class Subscriber():
         self.elapsed_time = 0
         self.delay = 3
         self.start_delay = False
+<<<<<<< HEAD
+=======
+        self.depth_status = "surface"
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
         self.is_stable = IsStable()
         self.set_point = SetPoint()
@@ -30,7 +34,11 @@ class Subscriber():
         self.set_point.roll = 0 #y
         self.set_point.pitch = 0 #x
         self.set_point.yaw = self.yaw
+<<<<<<< HEAD
         self.set_point.depth = -0.70
+=======
+        self.set_point.depth = -0.45
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
         self.towards_bucket = False
 
         self.param_delay = rospy.get_param('/nuc/delay')
@@ -49,6 +57,10 @@ class Subscriber():
         rospy.Subscriber('/rosserial/bucket_detected', Bool, self.callback_bucket)
         rospy.Subscriber('flag', Int8, self.callback_flag)
         rospy.Subscriber('object_difference', ObjectDifference, self.callback_object_difference)
+<<<<<<< HEAD
+=======
+        rospy.Subscriber('/depth_status', String, self.callback_depth_status)
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
     def set_heading(self, heading):
         # Change yaw set point from the given value
@@ -59,6 +71,12 @@ class Subscriber():
         self.current_time = rospy.get_time()
         self.elapsed_time = self.current_time - self.start
 
+<<<<<<< HEAD
+=======
+    def callback_depth_status(self, data: String):
+        self.depth_status = data.data
+
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
     def callback_object_difference(self, data: ObjectDifference):
         self.object_difference.object_type = data.object_type
         self.object_difference.x_difference = data.x_difference
@@ -93,6 +111,7 @@ class Subscriber():
         self.pub_is_start.publish(True)
 
         if not self.dive.data:
+<<<<<<< HEAD
             pass
             # if self.is_in_range(3, None): 
             #     rospy.loginfo("Surge")
@@ -109,6 +128,21 @@ class Subscriber():
             #     rospy.loginfo("Forward_Yaw")
             #     self.pub_move.publish("forward_yaw")
             #     self.set_heading(-90)
+=======
+            if self.is_in_range(6, None): 
+                rospy.loginfo("Manual")
+                self.pub_move.publish("manual")
+                if self.depth_status == "surface":
+                    print("To Surface!")
+                    self.set_point.depth = 0
+                if self.depth_status == "depth":
+                    print("Go Deep!")
+                    self.set_point.depth = 0.5
+            # if self.is_in_range(10, 22): 
+            #     rospy.loginfo("Forward_yaw")
+            #     self.pub_move.publish("forward_yaw")
+            #     self.set_heading(self.yaw)
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
             # if self.is_in_range(23, 28): 
             #     rospy.loginfo("Sway_Right")
             #     self.pub_move.publish("sway_right")
@@ -129,6 +163,7 @@ class Subscriber():
             #     rospy.loginfo("SURFACE")
             #     self.pub_move.publish("surface")
             #     self.set_point.depth = -0.8
+<<<<<<< HEAD
             # if self.is_in_range(3,None): 
             #     self.pub_constrain_pwm.publish(1500)
             # if self.is_in_range(3,None):
@@ -137,6 +172,16 @@ class Subscriber():
             #     self.pub_constrain_pwm.publish(1494)
             # if self.is_in_range(13,None):
             #     self.pub_constrain_pwm.publish(1450)
+=======
+            # if self.is_in_range(6,7):
+            #     self.pub_constrain_pwm.publish(1500)
+            # if self.is_in_range(7,8): 
+            #     self.pub_constrain_pwm.publish(1400)
+            # if self.is_in_range(8,9):
+            #     self.pub_constrain_pwm.publish(1200)
+            # if self.is_in_range(9,None):
+            #     self.pub_constrain_pwm.publish(1100)
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
             # if self.is_in_range(10, None):
             #     self.pub_constrain_pwm.publish(1100)
             # if self.is_in_range(11,12):

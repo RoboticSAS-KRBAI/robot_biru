@@ -61,11 +61,17 @@ add_message_files(
   Movement.msg
   MultiPID.msg
   ObjectDetection.msg
+<<<<<<< HEAD
   ObjectDifference.msg
   Orientation.msg
   PID.msg
   Sensor.msg
   SetPoint.msg
+=======
+  gerak.msg
+  ObjectDifference.msg
+  Manual.msg
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 )
 
 ## Generate services in the 'srv' folder

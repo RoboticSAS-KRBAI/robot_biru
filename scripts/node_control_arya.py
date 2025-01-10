@@ -139,18 +139,30 @@ class Subscriber():
         self.dprController = DPRController(0.5, 0.5)
         self.movement = ThrusterMovement()
         self.movement.stop()
+<<<<<<< HEAD
         self.object_difference = ObjectDifference()
+=======
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
         self.param_delay = rospy.get_param('/nuc/delay')
         self.param_arming_duration = rospy.get_param('/nuc/arming_duration')
 
         self.pid_depth = PID(1700, 0, 200)
+<<<<<<< HEAD
         self.pid_roll = PID(17, 0, 0)  #PID(15, 0, 0) bagus
         self.pid_pitch = PID(20, 0, 0)  #(22,0,12) #PID(15, 0, 7) bagus
         self.pid_camera = PID(1, 0, 0)
         
         # self.pid_yaw = PID(17, 0, 10)
         self.pid_yaw = PID(10, 0, 5)  #PID(10, 0, 1) bagus
+=======
+        self.pid_roll = PID(15, 0, 0)  #PID(15, 0, 0) bagus
+        self.pid_pitch = PID(20, 0, 7)  #PID(15, 0, 7) bagus
+        # self.pid_sway = PID(6, 0, 0)
+        
+        # self.pid_yaw = PID(17, 0, 10)
+        self.pid_yaw = PID(15, 0, 1)  #PID(10, 0, 1) bagus
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
         self.is_pre_calibrating = False
         self.dive = False
 
@@ -172,7 +184,11 @@ class Subscriber():
         rospy.Subscriber('error', Error, self.callback_error)
         rospy.Subscriber('is_start', Bool, self.callback_is_start)
         rospy.Subscriber('move', String, self.callback_move)
+<<<<<<< HEAD
         rospy.Subscriber('object_difference', ObjectDifference, self.callback_object_difference)
+=======
+        # rospy.Subscriber('object_difference', ObjectDifference, self.callback_object_difference)
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
         self.pub_dive = rospy.Publisher('dive',Bool,queue_size=10)
 
@@ -205,15 +221,24 @@ class Subscriber():
     def surge_yaw(self):
         min_pwm = 1000
         max_pwm = 2000
+<<<<<<< HEAD
 
         constrain_boost = 150
 
+=======
+    
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
         pwm_thruster_1 = self.constrain(1500 - (self.thrust_surge_sway_yaw[1] * 500 - self.get_offset(self.offset_surge_sway_yaw[1])), min_pwm, max_pwm)
         pwm_thruster_2 = self.constrain(1500 - (self.thrust_surge_sway_yaw[0] * 500 - self.get_offset(self.offset_surge_sway_yaw[0])), min_pwm, max_pwm)
         pwm_thruster_3 = self.constrain(1500 - (self.thrust_surge_sway_yaw[3] * 500 - self.get_offset(self.offset_surge_sway_yaw[3])), min_pwm, max_pwm)
         pwm_thruster_4 = self.constrain(1500 - (self.thrust_surge_sway_yaw[2] * 500 - self.get_offset(self.offset_surge_sway_yaw[2])), min_pwm, max_pwm)
+<<<<<<< HEAD
         pwm_thruster_9 = self.constrain(1500 - (self.thrust_surge_sway_yaw[1] * constrain_boost - self.get_offset(self.offset_surge_sway_yaw[1])), (1500-constrain_boost), (1500+constrain_boost))
         pwm_thruster_10 = self.constrain(1500 - (self.thrust_surge_sway_yaw[0] * constrain_boost - self.get_offset(self.offset_surge_sway_yaw[0])), (1500-constrain_boost), (1500+constrain_boost))
+=======
+        pwm_thruster_9 = self.constrain(1500 - (self.thrust_surge_sway_yaw[1] * 500 - self.get_offset(self.offset_surge_sway_yaw[1])), self.constrain_pwm_min, self.constrain_pwm_max)
+        pwm_thruster_10 = self.constrain(1500 - (self.thrust_surge_sway_yaw[0] * 500 - self.get_offset(self.offset_surge_sway_yaw[0])), self.constrain_pwm_min, self.constrain_pwm_max)
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
         
         self.movement.surge_sway_yaw(pwm_thruster_1, pwm_thruster_2, pwm_thruster_3, pwm_thruster_4, pwm_thruster_9, pwm_thruster_10)
 
@@ -225,8 +250,15 @@ class Subscriber():
         pwm_thruster_2 = self.constrain(1500 - (self.thrust_surge_sway_yaw[0] * 500 - self.get_offset(self.offset_surge_sway_yaw[0])), min_pwm, max_pwm)
         pwm_thruster_3 = self.constrain(1500 - (self.thrust_surge_sway_yaw[3] * 500 - self.get_offset(self.offset_surge_sway_yaw[3])), min_pwm, max_pwm)
         pwm_thruster_4 = self.constrain(1500 - (self.thrust_surge_sway_yaw[2] * 500 - self.get_offset(self.offset_surge_sway_yaw[2])), min_pwm, max_pwm)
+<<<<<<< HEAD
         pwm_thruster_9 = self.constrain(1500 - (self.thrust_surge_sway_yaw[0] * 500 - self.get_offset(self.offset_surge_sway_yaw[0])), self.constrain_pwm_min, self.constrain_pwm_max)
         pwm_thruster_10 = self.constrain(1500 - (self.thrust_surge_sway_yaw[1] * 500 - self.get_offset(self.offset_surge_sway_yaw[1])), self.constrain_pwm_min, self.constrain_pwm_max)
+=======
+        pwm_thruster_9 = 1500
+        #self.constrain(1500 - (self.thrust_surge_sway_yaw[0] * 500 - self.get_offset(self.offset_surge_sway_yaw[0])), self.constrain_pwm_min, self.constrain_pwm_max)
+        pwm_thruster_10 = 1500
+        #self.constrain(1500 - (self.thrust_surge_sway_yaw[1] * 500 - self.get_offset(self.offset_surge_sway_yaw[1])), self.constrain_pwm_min, self.constrain_pwm_max)
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
         
         self.movement.surge_sway_yaw(pwm_thruster_1, pwm_thruster_2, pwm_thruster_3, pwm_thruster_4, pwm_thruster_9, pwm_thruster_10)
 
@@ -240,6 +272,7 @@ class Subscriber():
         self.movement.depth_pitch_roll(pwm_thruster_5, pwm_thruster_6, pwm_thruster_7,pwm_thruster_8)
 
     def stabilize_depth_pitch_roll(self, error_depth, error_pitch, error_roll):
+<<<<<<< HEAD
         self.thrust_depth_pitch_roll = self.dprController.control(self.pid_depth(error_depth), self.pid_pitch(error_pitch), 0)
     #-(self.pid_roll(error_roll
 
@@ -247,6 +280,9 @@ class Subscriber():
         rospy.loginfo("Stabilize with camera")
         self.t_yaw = np.interp(self.pid_camera(error), [-500, 500], [-3, 3])
         self.thrust_surge_sway_yaw = self.ssyController.control(0, 2, self.t_yaw)
+=======
+        self.thrust_depth_pitch_roll = self.dprController.control(self.pid_depth(error_depth), self.pid_pitch(error_pitch), -(self.pid_roll(error_roll)))
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
     def stabilize_surge_yaw(self, error):
         self.t_yaw = np.interp(self.pid_yaw(error), [-500, 500], [-3, 3])
@@ -254,7 +290,11 @@ class Subscriber():
     
     def stabilize_surge(self, error):
         self.t_yaw = np.interp(self.pid_yaw(error), [-500, 500], [-3, 3])
+<<<<<<< HEAD
         self.thrust_surge_sway_yaw = self.ssyController.control(0, 2, -0.01)
+=======
+        self.thrust_surge_sway_yaw = self.ssyController.control(0, 2, 0)
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
     def stabilize_sway_yaw_left(self, error):
         self.t_yaw = np.interp(self.pid_yaw(error), [-500, 500], [-3, 3])
@@ -279,6 +319,7 @@ class Subscriber():
     def callback_move(self, data: String):
         self.move = data.data
 
+<<<<<<< HEAD
     def callback_object_difference(self, data: ObjectDifference):
         self.object_difference.object_type = data.object_type
         self.object_difference.x_difference = data.x_difference
@@ -288,6 +329,11 @@ class Subscriber():
     def callback_constrain_pwm(self, data: Int32):
         self.constrain_pwm_min = data.data
         self.constrain_pwm_max = (1500 - data.data) + 1500
+=======
+    def callback_constrain_pwm(self, data: Int32):
+        self.constrain_pwm_min = data.data
+        self.constrain_pwm_max = (1500 - data.data)+1500
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
         
     def callback_error(self, data: Error):
         self.stabilize_depth_pitch_roll(data.depth, data.pitch, data.roll)
@@ -309,6 +355,7 @@ class Subscriber():
 
     def stabilize(self):
         if self.move == "forward_yaw" or self.move == "camera" or self.move == "forward":
+<<<<<<< HEAD
             pass
             # self.surge_yaw()
             # self.depth_pitch_roll()
@@ -316,6 +363,12 @@ class Subscriber():
             pass
             # self.sway_yaw()
             # self.surge_yaw()
+=======
+            self.surge_yaw()
+            # self.depth_pitch_roll()
+        elif self.move == "sway_left" or self.move == "sway_right" or self.move == "yaw" or self.move == "yaw_right" or self.move == "yaw_left":
+            self.sway_yaw()
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
             # self.depth_pitch_roll()
         self.depth_pitch_roll()
         

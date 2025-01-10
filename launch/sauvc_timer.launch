@@ -1,6 +1,10 @@
 <launch>
     <arg name='rate' default='10' />
+<<<<<<< HEAD
     <arg name='delay' default='3' />
+=======
+    <arg name='delay' default='2' />
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
     <arg name='arming_duration' default='1' />
     <arg name='duration' default='-1' />
 
@@ -13,6 +17,11 @@
         <node pkg='robotic_sas_auv_ros' type='node_guidance_arya.py' name='node_guidance' output='screen'/>
         <node pkg='robotic_sas_auv_ros' type='node_accumulator_must.py' name='node_accumulator' output='screen'/>
         <node pkg='robotic_sas_auv_ros' type='node_navigation.py' name='node_navigation' output='screen'/>
+<<<<<<< HEAD
         <node pkg='robotic_sas_auv_ros' type='node_control_arya.py' name='node_control' output='screen'/>
+=======
+        <node pkg='robotic_sas_auv_ros' type='node_control_manual.py' name='node_control' output='screen'/>
+        <!-- <node pkg='robotic_sas_auv_ros' type='node_manual.py' name='node_manual' output='screen'/> -->
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
     </group>
 </launch>

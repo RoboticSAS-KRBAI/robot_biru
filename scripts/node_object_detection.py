@@ -6,7 +6,11 @@ import rospy
 from robotic_sas_auv_ros.msg import BoundingBox, ObjectDetection
 
 # Load the YOLOv8 model
+<<<<<<< HEAD
 model = YOLO('krbai_3.pt')
+=======
+model = YOLO('krbai_6.pt')
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
 # Set CUDA if available
 def get_cuda_device():
@@ -21,7 +25,11 @@ rospy.init_node('node_object_detection', anonymous=True)
 obj_det_pub = rospy.Publisher('/nuc/object_detection', ObjectDetection, queue_size=10)
 
 # Open the camera
+<<<<<<< HEAD
 cap = cv2.VideoCapture(0)  # '0' for internal camera, '1' or higher for external cameras
+=======
+cap = cv2.VideoCapture(4)  # '0' for internal camera, '1' or higher for external cameras
+>>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
 if not cap.isOpened():
     print("Cannot open camera")
