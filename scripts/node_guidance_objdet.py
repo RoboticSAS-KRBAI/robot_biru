@@ -26,11 +26,7 @@ class Subscriber():
         self.set_point.roll = 0 #y
         self.set_point.pitch = 0 #x
         self.set_point.yaw = -96
-<<<<<<< HEAD
         self.set_point.depth = -0.36
-=======
-        self.set_point.depth = -0.25
->>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
         self.param_delay = rospy.get_param('/nuc/delay')
         self.param_duration = rospy.get_param('/nuc/duration')
@@ -86,7 +82,6 @@ class Subscriber():
             #     else:
             #         self.pub_move.publish("camera")
 
-<<<<<<< HEAD
             if self.is_in_range(6, None): # and self.bucket_detected == False:
                 self.pub_move.publish("camera")
                 # if self.flag == 1:
@@ -114,34 +109,6 @@ class Subscriber():
 
                 # else:
                 #     self.pub_move.publish("camera")
-=======
-            if self.is_in_range(6, None) and self.bucket_detected == False:
-                if self.flag == 1:
-                    if self.object_difference.object_type == "Obstacle":
-                        rospy.loginfo("Object Detected Obstacle")
-                        rospy.loginfo("Avoid left")
-                        self.pub_move.publish("left")
-                    else:
-                        self.pub_move.publish("camera")
-
-                # elif self.flag == 2:
-                #     if self.object_difference.objet_type == "Gate":
-                #         self.pub_move.publish("camera")
-                #     else:
-                #         self.pub_move.publish("forward")
-                
-                elif self.flag == 3:
-                    if self.object_difference.object_type == "Bucket":
-                        rospy.loginfo("Centering Bucket")
-                        self.pub_move.publish("camera")
-                        self.towards_bucket = True
-                    elif self.towards_bucket == False:
-                        rospy.loginfo("Search for Bucket")
-                        self.pub_move.publish("right")
-
-                else:
-                    self.pub_move.publish("camera")
->>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
             # if self.flag == 2:
             #     if self.object_difference.object_type == "gate" and self.bucket_detected == False:
@@ -153,7 +120,6 @@ class Subscriber():
             #         rospy.loginfo("Object Detected Bucket")
             #         self.pub_move.publish("camera")
 
-<<<<<<< HEAD
             # if self.bucket_detected == True:
             #     rospy.loginfo("Surface")
             #     self.pub_move.publish("surface")
@@ -181,35 +147,6 @@ class Subscriber():
             #     self.pub_constrain_pwm.publish(1410)
             # if self.is_in_range(16,None):
             #     self.pub_constrain_pwm.publish(1400)
-=======
-            if self.bucket_detected == True:
-                rospy.loginfo("Surface")
-                self.pub_move.publish("surface")
-                self.set_point.depth = -0.8
-                
-            if self.is_in_range(6,7):
-                self.pub_constrain_pwm.publish(1500)
-            if self.is_in_range(7,8): 
-                self.pub_constrain_pwm.publish(1490)
-            if self.is_in_range(8,9):
-                self.pub_constrain_pwm.publish(1480)
-            if self.is_in_range(9,10):
-                self.pub_constrain_pwm.publish(1470)
-            if self.is_in_range(10, 11):
-                self.pub_constrain_pwm.publish(1460)
-            if self.is_in_range(11,12):
-                self.pub_constrain_pwm.publish(1450)
-            if self.is_in_range(12,13):
-                self.pub_constrain_pwm.publish(1440)
-            if self.is_in_range(13,14):
-                self.pub_constrain_pwm.publish(1430)
-            if self.is_in_range(14,15):
-                self.pub_constrain_pwm.publish(1420)
-            if self.is_in_range(15,16):
-                self.pub_constrain_pwm.publish(1410)
-            if self.is_in_range(16,None):
-                self.pub_constrain_pwm.publish(1400)
->>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
     def callback_flag(self, data: Int8):
         self.flag = data.data

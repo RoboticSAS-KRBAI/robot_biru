@@ -1,18 +1,4 @@
 <launch>
-    <arg name='rate' default='10' />
-    <arg name='delay' default='1' />
-    <arg name='arming_duration' default='1' />
-    <arg name='duration' default='-1' />
-
-    <group ns='nuc'>
-        <param name='rate' value='$(arg rate)'/>
-        <param name='delay' value='$(arg delay)'/>
-        <param name='arming_duration' value='$(arg arming_duration)'/>
-        <param name='duration' value='$(arg duration)'/>
-
-        <node pkg='robotic_sas_auv_ros' type='node_guidance_objdet.py' name='node_guidance' output='screen'/>
-        <node pkg='robotic_sas_auv_ros' type='node_accumulator.py' name='node_accumulator' output='screen'/>
-        <node pkg='robotic_sas_auv_ros' type='node_navigation.py' name='node_navigation' output='screen'/>
-        <node pkg='robotic_sas_auv_ros' type='node_control.py' name='node_control' output='screen'/>
-    </group>
+    <node pkg='robotic_sas_auv_ros' type='node_accumulator.py' name='node_guidance' output='screen'/>
+    <node pkg='robotic_sas_auv_ros' type='subs_teensy' name='node_accumulator' output='screen'/>
 </launch>

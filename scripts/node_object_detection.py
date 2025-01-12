@@ -6,11 +6,7 @@ import rospy
 from robotic_sas_auv_ros.msg import BoundingBox, ObjectDetection
 
 # Load the YOLOv8 model
-<<<<<<< HEAD
-model = YOLO('krbai_3.pt')
-=======
-model = YOLO('krbai_6.pt')
->>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
+model = YOLO('/home/wijayapratama/robotBiru_ws/src/robotic_sas_auv_ros/scripts/best.pt')
 
 # Set CUDA if available
 def get_cuda_device():
@@ -22,17 +18,14 @@ use_cuda = get_cuda_device()
 
 # Initialize ROS node
 rospy.init_node('node_object_detection', anonymous=True)
-obj_det_pub = rospy.Publisher('/nuc/object_detection', ObjectDetection, queue_size=10)
+obj_det_pub = rospy.Publisher('object_detection', ObjectDetection, queue_size=10)
 
-# Open the camera
-<<<<<<< HEAD
-cap = cv2.VideoCapture(0)  # '0' for internal camera, '1' or higher for external cameras
-=======
-cap = cv2.VideoCapture(4)  # '0' for internal camera, '1' or higher for external cameras
->>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
+# Open the video file
+video_path = '/home/wijayapratama/robotBiru_ws/src/robotic_sas_auv_ros/scripts/plareOrange2.mp4'  # Ganti dengan path ke video Anda
+cap = cv2.VideoCapture(video_path)
 
 if not cap.isOpened():
-    print("Cannot open camera")
+    print("Cannot open video file")
     exit()
 
 # Set the frame width and height
@@ -46,11 +39,11 @@ frame_center_y = 480 // 2
 while not rospy.is_shutdown():
     start_time = time.time()
     
-    # Capture frame from camera
+    # Capture frame from video
     ret, frame = cap.read()
 
     if not ret:
-        print("Can't receive frame (stream end?). Exiting ...")
+        print("End of video reached or cannot read the video file. Exiting ...")
         break
 
     # Upload frame to GPU if CUDA is available
@@ -109,7 +102,7 @@ while not rospy.is_shutdown():
     obj_det_pub.publish(obj_det_msg)
 
     # Display the frame
-    # cv2.imshow('Camera Feed', frame)
+    cv2.imshow('Video Feed', frame)
 
     # Calculate and display FPS
     fps = 1.0 / (time.time() - start_time)
@@ -119,6 +112,6 @@ while not rospy.is_shutdown():
     if cv2.waitKey(1) == ord('q'):
         break
 
-# Release the camera and close all OpenCV windows
+# Release the video file and close all OpenCV windows
 cap.release()
 cv2.destroyAllWindows()

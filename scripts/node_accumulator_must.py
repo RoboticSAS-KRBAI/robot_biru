@@ -85,13 +85,8 @@ class Subscriber():
         self.x_bucket = 0
         
         for bbox in data.bounding_boxes:
-<<<<<<< HEAD
             # rospy.loginfo("Class: %s, Probability: %.2f, Coordinates: (%d, %d), (%d, %d)",
             #             bbox.class_name, bbox.probability, bbox.x_min, bbox.y_min, bbox.x_max, bbox.y_max)
-=======
-            rospy.loginfo("Class: %s, Probability: %.2f, Coordinates: (%d, %d), (%d, %d)",
-                        bbox.class_name, bbox.probability, bbox.x_min, bbox.y_min, bbox.x_max, bbox.y_max)
->>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
             
             # Calculate the center x-coordinate of the bounding box
             center_x = (bbox.x_min + bbox.x_max) // 2
@@ -106,11 +101,7 @@ class Subscriber():
             if bbox.class_name == "Gate":
                 self.object_difference.object_type = bbox.class_name
                 self.object_difference.x_difference = x_difference
-<<<<<<< HEAD
                 self.x_gate = bbox.x_max - bbox.x_min
-=======
-                self.x_Gate = bbox.x_max - bbox.x_min
->>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
             if bbox.class_name == "Bucket":
                 self.object_difference.object_type = bbox.class_name
                 self.object_difference.x_difference = x_difference
@@ -125,13 +116,8 @@ class Subscriber():
             if self.largest == self.x_gate:
                 self.pub_largest_object.publish("Gate")
                 
-<<<<<<< HEAD
             # rospy.loginfo("Center x-coordinate of bounding box: %d", center_x)
             # rospy.loginfo("Pixel difference between bounding box center and frame center: %d", x_difference)
-=======
-            rospy.loginfo("Center x-coordinate of bounding box: %d", center_x)
-            rospy.loginfo("Pixel difference between bounding box center and frame center: %d", x_difference)
->>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
         
         self.pub_object_difference.publish(self.object_difference)
         

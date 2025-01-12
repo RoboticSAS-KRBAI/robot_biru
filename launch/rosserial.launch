@@ -2,13 +2,8 @@
     <arg name='port_arduino' default='/dev/ttyUSB0' />
     <arg name='baud_arduino' default='57600' />
 
-<<<<<<< HEAD
     <arg name='port_teensy' default='/dev/ttyACM0' />
     <arg name='baud_teensy' default='115200' />
-=======
-    <!-- <arg name='port_teensy' default='/dev/ttyACM0' />
-    <arg name='baud_teensy' default='57600' /> -->
->>>>>>> 1d758f689e6c1a54cb7ea24def456dd31db67e8b
 
     <group ns='rosserial'>
         <node pkg='robotic_sas_auv_ros' type='node_arduino.py' name='node_arduino' output='screen'>
